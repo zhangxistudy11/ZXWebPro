@@ -13,11 +13,16 @@
       max-width: 600px;
       margin: 0 auto;
       padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
     
     h1 {
       text-align: center;
       color: #333;
+      margin-bottom: 20px;
     }
     
     label {
@@ -33,6 +38,7 @@
       border-radius: 4px;
       box-sizing: border-box;
       font-size: 14px;
+      margin-bottom: 10px;
     }
     
     #filter-btn {
@@ -41,6 +47,9 @@
       color: white;
       cursor: pointer;
       border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
     }
     
     #filter-btn:hover {
@@ -88,11 +97,11 @@
     <input type="text" id="filter-input" placeholder="在此处输入匹配规则...">
     
     <div class="option-group">
-      <label class="option-label" for="case-sensitive-checkbox">大小写敏感：</label>
-      <select id="case-sensitive-checkbox">
-        <option value="no">否</option>
-        <option value="yes">是</option>
-      </select>
+      <label class="option-label">大小写敏感：</label>
+      <label for="case-sensitive-no" class="option-radio">否</label>
+      <input type="radio" id="case-sensitive-no" name="case-sensitive" value="no" checked>
+      <label for="case-sensitive-yes" class="option-radio">是</label>
+      <input type="radio" id="case-sensitive-yes" name="case-sensitive" value="yes">
     </div>
     
     <div class="option-group">
@@ -114,14 +123,13 @@
     const inputText = document.getElementById('input-text');
     const filterInput = document.getElementById('filter-input');
     const outputText = document.getElementById('output-text');
-    const caseSensitiveCheckbox = document.getElementById('case-sensitive-checkbox');
-    const wordMatchNoRadio = document.getElementById('word-match-no');
+    const caseSensitiveNoRadio = document.getElementById('case-sensitive-no');
     
     filterButton.addEventListener('click', function() {
       const searchText = inputText.value.trim();
       const filterRule = filterInput.value.trim();
-      const isCaseSensitive = caseSensitiveCheckbox.options[caseSensitiveCheckbox.selectedIndex].value === 'yes';
-      const isWordMatch = wordMatchNoRadio.checked;
+      const isCaseSensitive = caseSensitiveNoRadio.checked;
+      const isWordMatch = document.getElementById('word-match-no').checked;
       
       let highlightedText = searchText;
       
