@@ -73,6 +73,10 @@
       font-weight: bold;
     }
     
+    .input-section {
+      margin-bottom: 20px;
+    }
+    
     .option-group {
       display: flex;
       align-items: center;
@@ -92,23 +96,25 @@
   <div class="container">
     <h1>文本筛选器</h1>
     
-    <label for="input-text">原始文本：</label>
-
-    <textarea id="input-text" placeholder="在此处输入原始文本，支持直接输入或者从本地文本读取..."></textarea>
-    <div>
+    <div class="input-section">
+      <label for="input-text">原始文本：</label>
+      <textarea id="input-text" placeholder="支持直接输入或者从本地文件读取..."></textarea>
+      <div>
         <input type="file" id="file-input">
       </div>
+    </div>
     
-    
-    <label for="filter-input">筛选规则：</label>
-    <input type="text" id="filter-input" placeholder="在此处输入筛选规则...">
+    <div class="input-section">
+      <label for="filter-input">筛选规则：</label>
+      <input type="text" id="filter-input" placeholder="在此处输入筛选规则...">
+    </div>
     
     <div class="option-group">
-      <label class="option-label">大小写敏感：</label>
+      <label class="option-label">区分大小写：</label>
       <label for="case-sensitive-no" class="option-radio">否</label>
       <input type="radio" id="case-sensitive-no" name="case-sensitive" value="no" checked>
       <label for="case-sensitive-yes" class="option-radio">是</label>
-      <input type="radio" id="case-sensitive-yes" name="case-sensitive" value="yes">
+      <input type="radio" id="case-sensitive-yes" name="case-sensitive" value="yes" >
     </div>
     
     <div class="option-group">
@@ -141,7 +147,7 @@
       
       let highlightedText = searchText;
       
-      const modifier = isCaseSensitive ? 'g' : 'gi';
+      const modifier = isCaseSensitive ? 'gi' : 'g';
       const delimiter = isWordMatch ? '' : '\\b';
       
       const regex = new RegExp(`${delimiter}${filterRule}${delimiter}`, modifier);
