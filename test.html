@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>文字筛选</title>
+  <title>文本匹配器</title>
   <meta charset="UTF-8">
   <style>
     #input-text {
@@ -9,94 +9,69 @@
       height: 100px;
     }
     
+    #filter-input {
+      margin-top: 10px;
+    }
+    
+    #filter-btn {
+      margin-top: 10px;
+    }
+    
     #output-text {
       width: 300px;
       margin-top: 10px;
       padding: 5px;
+      white-space: pre-wrap; /* 保留换行格式 */
     }
     
     .highlight {
       background-color: yellow;
       font-weight: bold;
     }
-    
-    #filter-btn {
-      margin-top: 10px;
-    }
   </style>
 </head>
 <body>
-  <h1>文字筛选器</h1>
+  <h1>文本匹配器</h1>
   
   <textarea id="input-text" placeholder="在此处输入文本..."></textarea>
   
-  <textarea id="filter-rules" placeholder="在此处输入筛选规则..."></textarea>
+  <input type="text" id="filter-input" placeholder="在此处输入匹配规则...">
   
-  <button id="filter-btn">筛选</button>
+  <button id="filter-btn">匹配</button>
   
-  <h2>筛选结果:</h2>
-  <div id="output-text"></div>
+  <h2>匹配结果:</h2>
+  <pre id="output-text"></pre>
   
   <script>
     const filterButton = document.getElementById('filter-btn');
     const inputText = document.getElementById('input-text');
-    const filterRules = document.getElementById('filter-rules');
+    const filterInput = document.getElementById('filter-input');
     const outputText = document.getElementById('output-text');
     
     filterButton.addEventListener('click', function() {
       const searchText = inputText.value.trim();
-      const rulesText = filterRules.value.trim();
+      const filterRule = filterInput.value.trim();
       
       console.log('Search Text:', searchText);
-      console.log('Filter Rules:', rulesText);
+      console.log('Filter Rule:', filterRule);
       
-      const originalText = outputText.innerText;
+      const filterOptions = filterRule.split('|'); // 使用竖线分割多个规则
       
-      console.log('Original Text:', originalText);
+      const patterns = filterOptions.map(rule => new RegExp(rule, 'gi')); // 根据每个规则创建正则表达式
       
-      if (searchText.length > 0 && rulesText.length > 0) {
-        const rules = rulesText.split('\n'); // 将筛选规则按行分割
+      let highlightedText = searchText;
+      
+      patterns.forEach(pattern => {
+        const matches = highlightedText.match(pattern);
+        console.log('Matches:', matches);
         
-        console.log('Rules:', rules);
-        
-        let highlightedText = originalText;
-        
-        rules.forEach(rule => {
-          const keyword = rule.trim();
-          if (keyword.length > 0) {
-            highlightedText = highlightMatches(highlightedText, keyword);
-          }
-        });
-        
-        console.log('Highlighted Text:', highlightedText);
-        
-        outputText.innerHTML = highlightedText;
-      } else {
-        outputText.innerHTML = originalText;
-      }
+        if (matches) {
+          highlightedText = highlightedText.replace(pattern, '<span class="highlight">$&</span>');
+        }
+      });
+      
+      outputText.innerHTML = highlightedText;
     });
-    
-    function highlightMatches(text, keyword) {
-      const escapedKeyword = escapeRegExp(keyword); // 修改为转义函数
-      const pattern = new RegExp(`(${escapedKeyword})`, 'gi');
-      const highlightedText = text.replace(pattern, '<span class="highlight">$1</span>');
-      return highlightedText;
-    }
-    
-    function escapeRegExp(text) { // 新增转义函数
-      return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-    
-    function escapeHtml(text) {
-      const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-      };
-      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    }
   </script>
 </body>
 </html>
