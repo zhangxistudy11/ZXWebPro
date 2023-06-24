@@ -1,18 +1,102 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>网页标题</title>
+  <title>文字筛选</title>
+  <meta charset="UTF-8">
+  <style>
+    #input-text {
+      width: 300px;
+      height: 100px;
+    }
+    
+    #output-text {
+      width: 300px;
+      margin-top: 10px;
+      padding: 5px;
+    }
+    
+    .highlight {
+      background-color: yellow;
+      font-weight: bold;
+    }
+    
+    #filter-btn {
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>李珊珊生日快乐</h1>
-    <p>兔宝你好</p>
-    <button onclick="showPopup()">弹框</button>
-
-    <script>
-        function showPopup() {
-            alert("我弹出来了");
-        }
-    </script>
+  <h1>文字筛选器</h1>
+  
+  <textarea id="input-text" placeholder="在此处输入文本..."></textarea>
+  
+  <textarea id="filter-rules" placeholder="在此处输入筛选规则..."></textarea>
+  
+  <button id="filter-btn">筛选</button>
+  
+  <h2>筛选结果:</h2>
+  <div id="output-text"></div>
+  
+  <script>
+    const filterButton = document.getElementById('filter-btn');
+    const inputText = document.getElementById('input-text');
+    const filterRules = document.getElementById('filter-rules');
+    const outputText = document.getElementById('output-text');
+    
+    filterButton.addEventListener('click', function() {
+      const searchText = inputText.value.trim();
+      const rulesText = filterRules.value.trim();
+      
+      console.log('Search Text:', searchText);
+      console.log('Filter Rules:', rulesText);
+      
+      const originalText = outputText.innerText;
+      
+      console.log('Original Text:', originalText);
+      
+      if (searchText.length > 0 && rulesText.length > 0) {
+        const rules = rulesText.split('\n'); // 将筛选规则按行分割
+        
+        console.log('Rules:', rules);
+        
+        let highlightedText = originalText;
+        
+        rules.forEach(rule => {
+          const keyword = rule.trim();
+          if (keyword.length > 0) {
+            highlightedText = highlightMatches(highlightedText, keyword);
+          }
+        });
+        
+        console.log('Highlighted Text:', highlightedText);
+        
+        outputText.innerHTML = highlightedText;
+      } else {
+        outputText.innerHTML = originalText;
+      }
+    });
+    
+    function highlightMatches(text, keyword) {
+      const escapedKeyword = escapeRegExp(keyword); // 修改为转义函数
+      const pattern = new RegExp(`(${escapedKeyword})`, 'gi');
+      const highlightedText = text.replace(pattern, '<span class="highlight">$1</span>');
+      return highlightedText;
+    }
+    
+    function escapeRegExp(text) { // 新增转义函数
+      return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+  </script>
 </body>
 </html>
