@@ -71,6 +71,22 @@
     <label for="filter-input">筛选规则：</label>
     <input type="text" id="filter-input" placeholder="在此处输入匹配规则...">
     
+    <div>
+      <label for="case-sensitive-checkbox">大小写敏感：</label>
+      <select id="case-sensitive-checkbox">
+        <option value="no">否</option>
+        <option value="yes">是</option>
+      </select>
+    </div>
+    
+    <div>
+      <label>全单词匹配：</label>
+      <input type="radio" id="word-match-no" name="match-type" value="no" checked>
+      <label for="word-match-no">否</label>
+      <input type="radio" id="word-match-yes" name="match-type" value="yes">
+      <label for="word-match-yes">是</label>
+    </div>
+    
     <button id="filter-btn">匹配</button>
     
     <h2>匹配结果：</h2>
@@ -82,24 +98,26 @@
     const inputText = document.getElementById('input-text');
     const filterInput = document.getElementById('filter-input');
     const outputText = document.getElementById('output-text');
+    const caseSensitiveCheckbox = document.getElementById('case-sensitive-checkbox');
+    const wordMatchNoRadio = document.getElementById('word-match-no');
     
     filterButton.addEventListener('click', function() {
       const searchText = inputText.value.trim();
       const filterRule = filterInput.value.trim();
-      
-      const filterOptions = filterRule.split('|');
-      
-      const patterns = filterOptions.map(rule => new RegExp(rule, 'gi'));
+      const isCaseSensitive = caseSensitiveCheckbox.value === 'yes';
+      const isWordMatch = wordMatchNoRadio.checked;
       
       let highlightedText = searchText;
       
-      patterns.forEach(pattern => {
-        const matches = highlightedText.match(pattern);
-        
-        if (matches) {
-          highlightedText = highlightedText.replace(pattern, '<span class="highlight">$&</span>');
-        }
-      });
+      const modifier = isCaseSensitive ? 'g' : 'gi';
+      const delimiter = isWordMatch ? '' : '\\b';
+      
+      const regex = new RegExp(`${delimiter}${filterRule}${delimiter}`, modifier);
+      const matches = highlightedText.match(regex);
+      
+      if (matches) {
+        highlightedText = highlightedText.replace(regex, '<span class="highlight">$&</span>');
+      }
       
       outputText.innerHTML = highlightedText;
     });
