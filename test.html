@@ -17,6 +17,7 @@
     
     h1 {
       text-align: center;
+      color: #333;
     }
     
     label {
@@ -39,6 +40,7 @@
       background-color: #4caf50;
       color: white;
       cursor: pointer;
+      border: none;
     }
     
     #filter-btn:hover {
@@ -59,6 +61,20 @@
       background-color: yellow;
       font-weight: bold;
     }
+    
+    .option-group {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    
+    .option-label {
+      margin-right: 10px;
+    }
+    
+    .option-radio {
+      margin-right: 5px;
+    }
   </style>
 </head>
 <body>
@@ -71,20 +87,20 @@
     <label for="filter-input">筛选规则：</label>
     <input type="text" id="filter-input" placeholder="在此处输入匹配规则...">
     
-    <div>
-      <label for="case-sensitive-checkbox">大小写敏感：</label>
+    <div class="option-group">
+      <label class="option-label" for="case-sensitive-checkbox">大小写敏感：</label>
       <select id="case-sensitive-checkbox">
         <option value="no">否</option>
         <option value="yes">是</option>
       </select>
     </div>
     
-    <div>
-      <label>全单词匹配：</label>
+    <div class="option-group">
+      <label class="option-label">全单词匹配：</label>
+      <label for="word-match-no" class="option-radio">否</label>
       <input type="radio" id="word-match-no" name="match-type" value="no" checked>
-      <label for="word-match-no">否</label>
+      <label for="word-match-yes" class="option-radio">是</label>
       <input type="radio" id="word-match-yes" name="match-type" value="yes">
-      <label for="word-match-yes">是</label>
     </div>
     
     <button id="filter-btn">匹配</button>
@@ -104,7 +120,7 @@
     filterButton.addEventListener('click', function() {
       const searchText = inputText.value.trim();
       const filterRule = filterInput.value.trim();
-      const isCaseSensitive = caseSensitiveCheckbox.value === 'yes';
+      const isCaseSensitive = caseSensitiveCheckbox.options[caseSensitiveCheckbox.selectedIndex].value === 'yes';
       const isWordMatch = wordMatchNoRadio.checked;
       
       let highlightedText = searchText;
