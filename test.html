@@ -157,13 +157,19 @@
     fileInput.addEventListener('change', function() {
       const file = fileInput.files[0];
       const reader = new FileReader();
-      
+      var start = 0;
+     var stop = file.size - 1;
+
       reader.onload = function(e) {
-        const fileContent = e.target.result;
-        inputText.value = fileContent;
+        
+        if (e.target.readyState == FileReader.DONE) { // DONE == 2
+            const fileContent = e.target.result;
+            console.log("fileContent:" + fileContent);
+            inputText.value = fileContent;
+          }
       };
-      
-      reader.readAsText(file);
+      var blob = file.slice(start, stop + 1);
+      reader.readAsText(blob,"utf-8");
     });
   </script>
 </body>
