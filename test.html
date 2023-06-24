@@ -4,24 +4,55 @@
   <title>文本匹配器</title>
   <meta charset="UTF-8">
   <style>
-    #input-text {
-      width: 300px;
-      height: 100px;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
     }
     
-    #filter-input {
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    label {
+      font-weight: bold;
+      display: block;
       margin-top: 10px;
+    }
+    
+    textarea, input[type="text"], button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
     }
     
     #filter-btn {
       margin-top: 10px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    
+    #filter-btn:hover {
+      background-color: #45a049;
     }
     
     #output-text {
-      width: 300px;
-      margin-top: 10px;
-      padding: 5px;
-      white-space: pre-wrap; /* 保留换行格式 */
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      white-space: pre-wrap;
     }
     
     .highlight {
@@ -31,16 +62,20 @@
   </style>
 </head>
 <body>
-  <h1>文本匹配器</h1>
-  
-  <textarea id="input-text" placeholder="在此处输入文本..."></textarea>
-  
-  <input type="text" id="filter-input" placeholder="在此处输入匹配规则...">
-  
-  <button id="filter-btn">匹配</button>
-  
-  <h2>匹配结果:</h2>
-  <pre id="output-text"></pre>
+  <div class="container">
+    <h1>文本匹配器</h1>
+    
+    <label for="input-text">输入源：</label>
+    <textarea id="input-text" placeholder="在此处输入文本..."></textarea>
+    
+    <label for="filter-input">筛选规则：</label>
+    <input type="text" id="filter-input" placeholder="在此处输入匹配规则...">
+    
+    <button id="filter-btn">匹配</button>
+    
+    <h2>匹配结果：</h2>
+    <div id="output-text"></div>
+  </div>
   
   <script>
     const filterButton = document.getElementById('filter-btn');
@@ -52,18 +87,14 @@
       const searchText = inputText.value.trim();
       const filterRule = filterInput.value.trim();
       
-      console.log('Search Text:', searchText);
-      console.log('Filter Rule:', filterRule);
+      const filterOptions = filterRule.split('|');
       
-      const filterOptions = filterRule.split('|'); // 使用竖线分割多个规则
-      
-      const patterns = filterOptions.map(rule => new RegExp(rule, 'gi')); // 根据每个规则创建正则表达式
+      const patterns = filterOptions.map(rule => new RegExp(rule, 'gi'));
       
       let highlightedText = searchText;
       
       patterns.forEach(pattern => {
         const matches = highlightedText.match(pattern);
-        console.log('Matches:', matches);
         
         if (matches) {
           highlightedText = highlightedText.replace(pattern, '<span class="highlight">$&</span>');
