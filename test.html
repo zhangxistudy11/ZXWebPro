@@ -98,7 +98,6 @@
     <div>
       <label for="file-input">或选择文件：</label>
       <input type="file" id="file-input">
-      <button id="file-read-btn">读取文件</button>
     </div>
     
     <label for="filter-input">筛选规则：</label>
@@ -133,7 +132,6 @@
     const outputText = document.getElementById('output-text');
     const caseSensitiveNoRadio = document.getElementById('case-sensitive-no');
     const fileInput = document.getElementById('file-input');
-    const fileReadButton = document.getElementById('file-read-btn');
     
     filterButton.addEventListener('click', function() {
       const searchText = inputText.value.trim();
@@ -156,7 +154,7 @@
       outputText.innerHTML = highlightedText;
     });
     
-    fileReadButton.addEventListener('click', function() {
+    fileInput.addEventListener('change', function() {
       const file = fileInput.files[0];
       const reader = new FileReader();
       
