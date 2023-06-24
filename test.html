@@ -158,16 +158,18 @@
       const file = fileInput.files[0];
       const reader = new FileReader();
       var start = 0;
-     var stop = file.size - 1;
+      var stop = file.size - 1;
 
       reader.onload = function(e) {
-        
         if (e.target.readyState == FileReader.DONE) { // DONE == 2
-            const fileContent = e.target.result;
-            console.log("fileContent:" + fileContent);
-            inputText.value = fileContent;
-          }
+          const fileContent = e.target.result;
+          console.log("fileContent:" + fileContent);
+          inputText.value = fileContent;
+          inputText.style.height = "auto"; // Reset the height
+          inputText.style.height = inputText.scrollHeight + "px"; // Adjust the height based on content
+        }
       };
+
       var blob = file.slice(start, stop + 1);
       reader.readAsText(blob,"utf-8");
     });
