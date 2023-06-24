@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>文本匹配器</title>
+  <title>文本筛选器</title>
   <meta charset="UTF-8">
   <style>
     body {
@@ -39,6 +39,7 @@
       box-sizing: border-box;
       font-size: 14px;
       margin-bottom: 10px;
+      resize: vertical;
     }
     
     #filter-btn {
@@ -64,6 +65,7 @@
       border-radius: 4px;
       font-size: 14px;
       white-space: pre-wrap;
+      resize: vertical;
     }
     
     .highlight {
@@ -88,13 +90,13 @@
 </head>
 <body>
   <div class="container">
-    <h1>文本匹配器</h1>
+    <h1>文本筛选器</h1>
     
     <label for="input-text">输入源：</label>
     <textarea id="input-text" placeholder="在此处输入文本..."></textarea>
     
     <label for="filter-input">筛选规则：</label>
-    <input type="text" id="filter-input" placeholder="在此处输入匹配规则...">
+    <input type="text" id="filter-input" placeholder="在此处输入筛选规则...">
     
     <div class="option-group">
       <label class="option-label">大小写敏感：</label>
@@ -105,16 +107,16 @@
     </div>
     
     <div class="option-group">
-      <label class="option-label">全单词匹配：</label>
+      <label class="option-label">全单词筛选：</label>
       <label for="word-match-no" class="option-radio">否</label>
       <input type="radio" id="word-match-no" name="match-type" value="no" checked>
       <label for="word-match-yes" class="option-radio">是</label>
       <input type="radio" id="word-match-yes" name="match-type" value="yes">
     </div>
     
-    <button id="filter-btn">匹配</button>
+    <button id="filter-btn">筛选</button>
     
-    <h2>匹配结果：</h2>
+    <h2>筛选结果：</h2>
     <div id="output-text"></div>
   </div>
   
